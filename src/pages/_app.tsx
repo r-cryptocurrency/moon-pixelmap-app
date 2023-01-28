@@ -28,15 +28,17 @@ import { RedditNameContext } from "../hooks/useRedditNameContext";
 import useWindowSize from "../hooks/useWindowSize";
 import { PinchContext } from "../hooks/usePinchContext";
 import { BlackListContext } from "../hooks/useBlackListContext";
+import { EthersMulticall } from "@morpho-labs/ethers-multicall";
 
 function App({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = React.useState(false);
   const provider = useProvider();
-  const pixelMapContract = useContract({
+  const multicall = new EthersMulticall(provider);
+  const pixelMapContract = multicall.wrap(useContract({
     address: PixelMapContract.address[42170],
     abi: PixelMapContract.abi,
     signerOrProvider: provider,
-  });
+  })!);
 
   const { address } = useAccount();
   const [editProps, setEditProps] = React.useState<{
@@ -91,6 +93,10 @@ function App({ Component, pageProps }: AppProps) {
         })
       );
     try {
+      const errorColors: string[] = [];
+      for (let i = 0; i < 100; i++) {
+        errorColors[i] = "red";
+      }
       const soldBlocks = await pixelMapContract?.getAllSoldBlocks();
       if (soldBlocks && soldBlocks.length > 0) {
         await Promise.all(
@@ -98,7 +104,12 @@ function App({ Component, pageProps }: AppProps) {
             const x = Math.floor(block.toNumber() / 100),
               y = block.toNumber() % 100;
             const blockInfo = await pixelMapContract?.getBlockInfo(x, y);
-            let colorData = await getColorsFromURI(blockInfo.uri);
+            let colorData = errorColors;
+            try {
+              colorData = await getColorsFromURI(blockInfo.uri);
+            } catch (err) {
+              console.error("Failed to get colors from image URI", blockInfo.uri, err);
+            }
             const newBlock: BlockInfo = {
               owner: blockInfo.owner,
               colors: colorData,

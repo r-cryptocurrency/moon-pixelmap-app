@@ -30,12 +30,15 @@ export const encodeDataUri = (uri: string) => {
   return JSON.parse(Base64.fromBase64(uri.slice(29)));
 };
 
+const IMAGE_LOAD_TIMEOUT = 2000;
+
 export const getColorsFromURI = (uri: string) => {
   return new Promise<string[]>((resolve, reject) => {
     const metadata = encodeDataUri(uri);
     const image = new Image();
     image.src = metadata.image;
 
+    let done = false;
     image.onload = () => {
       const canvas = document.createElement("canvas");
       let ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -50,8 +53,17 @@ export const getColorsFromURI = (uri: string) => {
           )}${decToHex(data?.data[2] ?? 0)}`;
         }
       }
-      resolve(colors);
+      if (!done) {
+        done = true;
+        resolve(colors);
+      }
     };
+    setTimeout(() => {
+      if (!done) {
+        done = true;
+        reject(new Error("Timed out loading image after " + IMAGE_LOAD_TIMEOUT + " milliseconds"))
+      }
+    }, IMAGE_LOAD_TIMEOUT);
   });
 };
 
