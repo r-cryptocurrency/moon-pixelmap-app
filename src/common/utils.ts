@@ -27,7 +27,15 @@ export const decToHex = (num: number) => {
 };
 
 export const encodeDataUri = (uri: string) => {
-  return JSON.parse(Base64.fromBase64(uri.slice(29)));
+  try {
+    return JSON.parse(Base64.fromBase64(uri.slice(29)));
+  } catch (err) {
+    return {
+      title: "",
+      description: "",
+      image: getImageDataURI(Array(100).fill("#f00")),
+    };
+  }
 };
 
 const IMAGE_LOAD_TIMEOUT = 2000;
@@ -61,7 +69,13 @@ export const getColorsFromURI = (uri: string) => {
     setTimeout(() => {
       if (!done) {
         done = true;
-        reject(new Error("Timed out loading image after " + IMAGE_LOAD_TIMEOUT + " milliseconds"))
+        reject(
+          new Error(
+            "Timed out loading image after " +
+              IMAGE_LOAD_TIMEOUT +
+              "milliseconds"
+          )
+        );
       }
     }, IMAGE_LOAD_TIMEOUT);
   });
@@ -81,6 +95,22 @@ export const getBlankImageURI = () => {
 
 export const getAbbrAddress = (address: string) => {
   return address.slice(0, 4) + "..." + address.slice(-4);
+};
+
+export const getImageDataURI = (colors: any) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 10;
+  canvas.height = 10;
+  let ctx = canvas.getContext("2d");
+  if (ctx) {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        ctx.fillStyle = colors[i * 10 + j];
+        ctx.fillRect(j, i, 1, 1);
+      }
+    }
+  }
+  return canvas.toDataURL();
 };
 
 export const getPinchDistance = (touches: TouchList) => {

@@ -6,6 +6,7 @@ import { ThemeProvider } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 import { BigNumber } from "ethers";
 import axios from "axios";
+import { EthersMulticall } from "@morpho-labs/ethers-multicall";
 
 import { client } from "../wagmi";
 import GlobalStyle from "../style/global";
@@ -28,17 +29,18 @@ import { RedditNameContext } from "../hooks/useRedditNameContext";
 import useWindowSize from "../hooks/useWindowSize";
 import { PinchContext } from "../hooks/usePinchContext";
 import { BlackListContext } from "../hooks/useBlackListContext";
-import { EthersMulticall } from "@morpho-labs/ethers-multicall";
 
 function App({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = React.useState(false);
   const provider = useProvider();
   const multicall = new EthersMulticall(provider);
-  const pixelMapContract = multicall.wrap(useContract({
-    address: PixelMapContract.address[42170],
-    abi: PixelMapContract.abi,
-    signerOrProvider: provider,
-  })!);
+  const pixelMapContract = multicall.wrap(
+    useContract({
+      address: PixelMapContract.address[42170],
+      abi: PixelMapContract.abi,
+      signerOrProvider: provider,
+    })!
+  );
 
   const { address } = useAccount();
   const [editProps, setEditProps] = React.useState<{
@@ -93,10 +95,7 @@ function App({ Component, pageProps }: AppProps) {
         })
       );
     try {
-      const errorColors: string[] = [];
-      for (let i = 0; i < 100; i++) {
-        errorColors[i] = "red";
-      }
+      const errorColors = Array(100).fill("red");
       const soldBlocks = await pixelMapContract?.getAllSoldBlocks();
       if (soldBlocks && soldBlocks.length > 0) {
         await Promise.all(
@@ -108,7 +107,11 @@ function App({ Component, pageProps }: AppProps) {
             try {
               colorData = await getColorsFromURI(blockInfo.uri);
             } catch (err) {
-              console.error("Failed to get colors from image URI", blockInfo.uri, err);
+              console.error(
+                "Failed to get colors from image URI",
+                blockInfo.uri,
+                err
+              );
             }
             const newBlock: BlockInfo = {
               owner: blockInfo.owner,
