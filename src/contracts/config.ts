@@ -1,7 +1,7 @@
 export const PixelMap = {
   address: {
     80001: "0x66FF1BcdCD50bB234B7A2102cF0875dfca60E703",
-    42170: "0x2f8A69b0F843E95eaE444681a5047d38620dD5c4",
+    42170: "0x934095513c1ff89592A4b8490e263da7a6a4CEAc",
   },
   abi: [
     {
