@@ -15,7 +15,11 @@ import {
 } from "wagmi";
 import { PixelMap, Token } from "../../contracts/config";
 import useBoardContext from "../../hooks/useBoardContext";
-import { getTruncatedAddress, isEmpty } from "../../common/utils";
+import {
+  getImageDataURI,
+  getTruncatedAddress,
+  isEmpty,
+} from "../../common/utils";
 import useTxLoadingContext from "../../hooks/useTxLoadingContext";
 import ColorBar from "../ColorBar";
 import { useSnackbar } from "notistack";
@@ -87,7 +91,7 @@ const EditBlockModal: React.FC = () => {
     const metadata = {
       title: "Moon Pixel Map",
       description: `Block: (${x}, ${y})`,
-      image: getImageDataURI(0),
+      image: getImageDataURI(Array(100).fill("#fff")),
     };
     const tokenURI =
       "data:application/json;base64," +
@@ -141,34 +145,13 @@ const EditBlockModal: React.FC = () => {
     setLoadingOpen(false);
   };
 
-  const getImageDataURI = (mode: number) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 10;
-    canvas.height = 10;
-    let ctx = canvas.getContext("2d");
-    if (ctx) {
-      if (mode === 0) {
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, 10, 10);
-      } else if (mode === 1) {
-        for (let i = 0; i < 10; i++) {
-          for (let j = 0; j < 10; j++) {
-            ctx.fillStyle = colors[i * 10 + j];
-            ctx.fillRect(j, i, 1, 1);
-          }
-        }
-      }
-    }
-    return canvas.toDataURL();
-  };
-
   const updateHandler = async () => {
     setLoadingOpen(true);
 
     const metadata = {
       title: "Moon Pixel Map",
       description: `Block: (${x}, ${y})`,
-      image: getImageDataURI(1),
+      image: getImageDataURI(colors),
     };
     const tokenURI =
       "data:application/json;base64," +
