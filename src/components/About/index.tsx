@@ -23,12 +23,11 @@ const About: React.FC = () => {
         </Box>
         <Box my={"50px"} maxWidth={"700px"} mx={"auto"} lineHeight={2}>
           <p>
-            It’s Simple - 1 Million Pixels divided into 10,000 Tiles ( 1 Tile =
-            100 Pixles ). To buy a Tile you have to burn 100 Moons.
+            It’s simple - 1 Million pixels divided into 10,000 Tiles ( 1 Tile =
+            100 pixels ). To buy a tile you have to burn 100 MOONs.
           </p>{" "}
-          <p>We are aiming to burn 1,000,000 Moons !</p>{" "}
           <p>
-            MoonPixel is inspired by r/Place and{" "}
+            MoonPlace is inspired by r/Place and{" "}
             <a
               href="http://www.milliondollarhomepage.com"
               target={"_blank"}
@@ -37,12 +36,11 @@ const About: React.FC = () => {
             >
               http://www.milliondollarhomepage.com
             </a>{" "}
-            while bringing blockchain and decentralization to the base idea.
+            while adding web3 functionality.
           </p>{" "}
           <p>
-            Users who mint Pixels and Tiles are the true and only owner of them,
-            even if we shut down this website, the pixels are still saved on
-            Arbitrum Nova blockchain forever!
+            Users who mint retain ownership even if this website shuts down, the NFTs will still exist on
+            the Arbitrum Nova blockchain forever! 
           </p>{" "}
           <p>And anyone can make new website that displays the pixels.</p>
         </Box>
