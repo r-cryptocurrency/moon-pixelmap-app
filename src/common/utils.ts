@@ -66,6 +66,12 @@ export const getColorsFromURI = (uri: string) => {
         resolve(colors);
       }
     };
+    image.onerror = () => {
+      if (!done) {
+        done = true;
+        reject(new Error("Error loading image"));
+      }
+    };
     setTimeout(() => {
       if (!done) {
         done = true;
