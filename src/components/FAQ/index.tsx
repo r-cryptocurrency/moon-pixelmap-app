@@ -12,25 +12,25 @@ import { BsChevronDown } from "react-icons/bs";
 const data = [
   {
     q: "How many pixels are available?",
-    a: "1,000,000 Pixels are available but you can’t buy single pixel, pixels are sold in 10x10 tiles (100 pixels)",
+    a: "1,000,000 pixels are available. Pixels are sold in 10x10 tiles (100 pixels)",
   },
   { q: "What’s the price for each tile?", a: "100 Moons" },
   {
-    q: "Is it NFT?",
-    a: "Yes, each tile of 100 pixles is an NFT, there are 10,000 NFTs available for minting.",
+    q: "Is it an NFT?",
+    a: "Yes, each tile of 100 pixels is an NFT, there are a total of 10,000 NFTs available for minting.",
   },
-  { q: "Can I sell these Tiles on NFT Marketplace? OpenSea?", a: "Sure" },
+  { q: "Can I sell these tiles on an NFT Marketplace? OpenSea?", a: "Yes, you are free to use minted NFTs however you like. OpenSea recently added support for the Arbitrum Nova network." },
   {
-    q: "I bought few Tiles on OpenSea, can I change them?",
+    q: "I bought/minted a tile, can I change it?",
     a: (
       <>
         Yes
         <p style={{ color: "#0a1123" }}>
-          • Click on “View my tiels” and you will get all the NFTs you own
-          (Highlighted in Red borders)
+          • Click on View My Tiles on the PixelMap splash page to review your owned NFTs 
+          (highlighted in hed borders)
         </p>
         <p style={{ color: "#0a1123" }}>
-          • Click on them and change the pixels however you like.
+          • Click each owned NFT to change the pixels however you like.
         </p>
         <p style={{ color: "#0a1123" }}>
           • Click on “Update” and send the transaction.
@@ -41,40 +41,40 @@ const data = [
   },
   {
     q: "Is there any fee for updating the NFTs?",
-    a: "No, just the network fees.",
+    a: "No, just the network fees (gas).",
   },
   {
     q: "What are Black Tiles?",
     a: (
       <>
         <p style={{ color: "#0a1123" }}>
-          Some tiles can be inappropriate or NSFW, we can Black those Tiles out
-          (Just from the front end)
+          Some users may update inappropriate or NSFW images onto tiles. Moderators can censor those tiles
+          (just from the frontend/website)
         </p>{" "}
         <p style={{ color: "#0a1123" }}>
           Tiles are decentralized and once you buy them, only you can change
-          them.
+          them
         </p>{" "}
         <p style={{ color: "#0a1123" }}>
-          Anyone can build their own frontend and display the tiles.
+          Additionally, anyone can build their own frontend and display the tiles
         </p>
       </>
     ),
   },
   {
-    q: "Can you buy multiple Tiles?",
-    a: "Yes, click on “Multi Tiles, select all the tiles you want and click “Buy Tiles”.",
+    q: "Can you buy multiple tiles?",
+    a: "Yes, click on Multi Tiles, select all the tiles you want and click Buy Tiles.",
   },
   {
     q: "What are Moons?",
-    a: "Moons are part of Reddit Community Points project, Moons are the native currency of r/Cryptocurrency- the biggest Crypto community on the Internet.",
+    a: "Moons are part of Reddit's Community Points project, Moons are the native currency of r/Cryptocurrency- the biggest Crypto community on the Internet.",
   },
-  { q: "On which network is this project built on?", a: "Arbitrum Nova." },
+  { q: "Which network is this project built on?", a: "Arbitrum Nova." },
   {
     q: "How can I buy Moons?",
     a: (
       <a
-        href="https://www.coingecko.com/en/coins/moon"
+        href="https://www.coingecko.com/en/coins/moon#markets"
         target={"_blank"}
         rel={"noreferrer"}
         style={{
