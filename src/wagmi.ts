@@ -25,7 +25,7 @@ export const arbitrumNova: Chain = {
   },
   contracts: {
     multicall3: {
-      address: "0x5e1eE626420A354BbC9a95FeA1BAd4492e3bcB86",
+      address: "0xca11bde05977b3631167028862be2a173976ca11",
       blockCreated: 24,
     },
   },
