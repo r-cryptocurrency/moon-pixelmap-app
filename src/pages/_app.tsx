@@ -95,31 +95,34 @@ function App({ Component, pageProps }: AppProps) {
         })
       );
     try {
-      const errorColors = Array(100).fill("red");
+      const errorColors = Array(100).fill("#f00");
       const soldBlocks = await pixelMapContract?.getAllSoldBlocks();
       if (soldBlocks && soldBlocks.length > 0) {
         await Promise.all(
           soldBlocks.map(async (block: BigNumber) => {
             const x = Math.floor(block.toNumber() / 100),
               y = block.toNumber() % 100;
-            const blockInfo = await pixelMapContract?.getBlockInfo(x, y);
-            let colorData = errorColors;
             try {
-              colorData = await getColorsFromURI(blockInfo.uri);
+              const blockInfo = await pixelMapContract?.getBlockInfo(x, y);
+              let colorData = await getColorsFromURI(blockInfo.uri);
+              const newBlock: BlockInfo = {
+                owner: blockInfo.owner,
+                colors: colorData,
+                src: blockInfo.uri,
+                name: blockInfo.name,
+              };
+              blockData[block.toNumber()] = newBlock;
             } catch (err) {
-              console.error(
-                "Failed to get colors from image URI",
-                blockInfo.uri,
-                err
-              );
+              const ownerInfo = await pixelMapContract?.ownerOf(block);
+              const name = await pixelMapContract?.getName(ownerInfo);
+              const newBlock: BlockInfo = {
+                owner: ownerInfo,
+                colors: errorColors,
+                src: "",
+                name: name,
+              };
+              blockData[block.toNumber()] = newBlock;
             }
-            const newBlock: BlockInfo = {
-              owner: blockInfo.owner,
-              colors: colorData,
-              src: blockInfo.uri,
-              name: blockInfo.name,
-            };
-            blockData[block.toNumber()] = newBlock;
           })
         );
         setBlocks(blockData);
