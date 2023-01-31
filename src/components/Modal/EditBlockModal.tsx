@@ -25,6 +25,7 @@ import ColorBar from "../ColorBar";
 import { useSnackbar } from "notistack";
 import { BigNumber, ethers } from "ethers";
 import useRedditNameContext from "../../hooks/useRedditNameContext";
+import axios from "axios";
 
 const EditBlockModal: React.FC = () => {
   const { isConnected, address } = useAccount();
@@ -124,6 +125,15 @@ const EditBlockModal: React.FC = () => {
 
       const buyTx = await pixelMapContract?.buy(x, y, tokenURI);
       await buyTx.wait();
+      await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/blocks/buy`, {
+        blocks: [
+          {
+            blockId: x * 100 + y,
+            owner: address?.toString(),
+            uri: tokenURI,
+          },
+        ],
+      });
 
       setBlocks([
         ...blocks.slice(0, x * 100 + y),
@@ -184,6 +194,10 @@ const EditBlockModal: React.FC = () => {
       }
       const updateTx = await pixelMapContract?.update(x, y, tokenURI);
       await updateTx.wait();
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/blocks/update`,
+        { blockId: x * 100 + y, owner: address?.toString(), uri: tokenURI }
+      );
 
       setOpen({ x: 0, y: 0, open: false });
       fetchBlocks();

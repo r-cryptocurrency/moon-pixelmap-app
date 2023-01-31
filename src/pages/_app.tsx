@@ -6,7 +6,6 @@ import { ThemeProvider } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 import { BigNumber } from "ethers";
 import axios from "axios";
-import { EthersMulticall } from "@morpho-labs/ethers-multicall";
 
 import { client } from "../wagmi";
 import GlobalStyle from "../style/global";
@@ -95,31 +94,27 @@ function App({ Component, pageProps }: AppProps) {
         })
       );
     try {
-      const errorColors = Array(100).fill("red");
-      const soldBlocks = await pixelMapContract?.getAllSoldBlocks();
-      if (soldBlocks && soldBlocks.length > 0) {
+      const errorColors = Array(100).fill("#f00");
+      const results = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/blocks/all`
+      );
+      console.log(results);
+      if (results.status === 200 && results.data) {
         await Promise.all(
-          soldBlocks.map(async (block: BigNumber) => {
-            const x = Math.floor(block.toNumber() / 100),
-              y = block.toNumber() % 100;
-            const blockInfo = await pixelMapContract?.getBlockInfo(x, y);
+          results.data.map(async (block: any) => {
             let colorData = errorColors;
             try {
-              colorData = await getColorsFromURI(blockInfo.uri);
+              colorData = await getColorsFromURI(block.uri);
             } catch (err) {
-              console.error(
-                "Failed to get colors from image URI",
-                blockInfo.uri,
-                err
-              );
+              console.log(err);
             }
             const newBlock: BlockInfo = {
-              owner: blockInfo.owner,
+              owner: block.owner,
               colors: colorData,
-              src: blockInfo.uri,
-              name: blockInfo.name,
+              src: block.uri,
+              name: block.name,
             };
-            blockData[block.toNumber()] = newBlock;
+            blockData[block.blockId] = newBlock;
           })
         );
         setBlocks(blockData);
@@ -132,8 +127,12 @@ function App({ Component, pageProps }: AppProps) {
 
   const fetchRedditName = async () => {
     try {
-      const name = await pixelMapContract?.getName(address?.toString());
-      setRedditName(name);
+      const result = await axios.get(
+        `${
+          process.env.NEXT_PUBLIC_SERVER_URL
+        }/api/name/get/${address?.toString()}`
+      );
+      setRedditName(result.data);
     } catch (err) {
       setRedditName("");
     }
