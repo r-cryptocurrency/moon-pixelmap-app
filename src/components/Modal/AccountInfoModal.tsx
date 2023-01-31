@@ -27,6 +27,7 @@ import useLoadingContext from "../../hooks/useTxLoadingContext";
 import useRedditNameContext from "../../hooks/useRedditNameContext";
 import { PixelMap, Token } from "../../contracts/config";
 import { ethers } from "ethers";
+import axios from "axios";
 
 const AccountInfoModal: React.FC = () => {
   const { mode, setMode } = useWalletModal();
@@ -106,6 +107,11 @@ const AccountInfoModal: React.FC = () => {
 
         const setTx = await pixelMapContract?.setName("u/" + name);
         await setTx.wait();
+        await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/name/set`, {
+          address: address?.toString(),
+          name: "u/" + name,
+        });
+
         setName("u/" + name);
         setRedditName("u/" + name);
         setNameEdit(false);

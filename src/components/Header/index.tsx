@@ -21,6 +21,7 @@ import BalanceChip from "../BalanceChip";
 import useWindowSize from "../../hooks/useWindowSize";
 import useRedditNameContext from "../../hooks/useRedditNameContext";
 import useWalletModal from "../../hooks/useWalletModalContext";
+import axios from "axios";
 
 const Header: React.FC = () => {
   const { batches, setBatches, mode, setMode } = useBatchContext();
@@ -151,6 +152,14 @@ const Header: React.FC = () => {
         batchURIs
       );
       await batchBuyTx.wait();
+      const blocks = batches.map((batch, index) => ({
+        blockId: batch.x * 100 + batch.y,
+        owner: address?.toString(),
+        uri: batchURIs[index],
+      }));
+      await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/blocks/buy`, {
+        blocks,
+      });
 
       fetchBlocks();
     } catch (err) {
