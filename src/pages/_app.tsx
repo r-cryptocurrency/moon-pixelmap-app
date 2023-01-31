@@ -95,7 +95,8 @@ function App({ Component, pageProps }: AppProps) {
       );
     try {
       const errorColors = Array(100).fill("#f00");
-      const results = await axios.get(
+
+const results = await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/blocks/all`
       );
       console.log(results);
@@ -115,6 +116,7 @@ function App({ Component, pageProps }: AppProps) {
               name: block.name,
             };
             blockData[block.blockId] = newBlock;
+
           })
         );
         setBlocks(blockData);
