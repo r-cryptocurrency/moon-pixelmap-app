@@ -17,8 +17,8 @@ export const getTruncatedAddress = (
     (address === owner
       ? "ME"
       : isEmpty(name)
-        ? address.slice(0, 6) + "..." + address.slice(-4)
-        : name)
+      ? address.slice(0, 6) + "..." + address.slice(-4)
+      : name)
   );
 };
 
@@ -38,6 +38,7 @@ export const encodeDataUri = (uri: string) => {
   }
 };
 
+const IMAGE_LOAD_TIMEOUT = 2000;
 
 export const getColorsFromURI = (uri: string) => {
   return new Promise<string[]>((resolve, reject) => {
@@ -45,6 +46,7 @@ export const getColorsFromURI = (uri: string) => {
     const image = new Image();
     image.src = metadata.image;
 
+    let done = false;
     image.onload = () => {
       const canvas = document.createElement("canvas");
       let ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -59,8 +61,24 @@ export const getColorsFromURI = (uri: string) => {
           )}${decToHex(data?.data[2] ?? 0)}`;
         }
       }
-      resolve(colors);
+      if (!done) {
+        done = true;
+        resolve(colors);
+      }
     };
+    setTimeout(() => {
+      if (!done) {
+        done = true;
+        reject(
+          new Error(
+            "Timed out loading image after " +
+              IMAGE_LOAD_TIMEOUT +
+              "milliseconds" +
+              uri
+          )
+        );
+      }
+    }, IMAGE_LOAD_TIMEOUT);
   });
 };
 
@@ -100,7 +118,7 @@ export const getPinchDistance = (touches: TouchList) => {
   if (touches.length === 2) {
     return Math.sqrt(
       Math.pow(touches[0].pageX - touches[1].pageX, 2) +
-      Math.pow(touches[0].pageY - touches[1].pageY, 2)
+        Math.pow(touches[0].pageY - touches[1].pageY, 2)
     );
   }
   return 0;
