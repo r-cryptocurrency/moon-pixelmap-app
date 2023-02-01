@@ -276,7 +276,7 @@ const PixelMap: React.FC = () => {
         const SERVER_URL =
           process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8001";
         const result = await axios.post(`${SERVER_URL}/api/blackout/add`, {
-          blocks: batches,
+          blacks: batches,
         });
         setBlacks(result.data);
       } catch (err) {
@@ -295,7 +295,7 @@ const PixelMap: React.FC = () => {
         const SERVER_URL =
           process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8001";
         const result = await axios.post(`${SERVER_URL}/api/blackout/remove`, {
-          blocks: batches,
+          blacks: batches,
         });
         setBlacks(result.data);
       } catch (err) {
