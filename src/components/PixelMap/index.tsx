@@ -37,7 +37,7 @@ const PixelMap: React.FC = () => {
   const { size, setSize } = usePixelSizeContext();
   const { open: viewOpen } = useViewBlockContext();
   const { mode, batches, setBatches, setMode } = useBatchContext();
-  const { blacks, open: blackShow, setBlacks } = useBlackList();
+  const { blacks, open: blackShow, setBlacks, fetchBlacks } = useBlackList();
   const {
     startDistance: pinchStartDistance,
     startSize: pinchStartSize,
@@ -275,10 +275,10 @@ const PixelMap: React.FC = () => {
       try {
         const SERVER_URL =
           process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8001";
-        const result = await axios.post(`${SERVER_URL}/api/blackout/add`, {
+        await axios.post(`${SERVER_URL}/api/blackout/add`, {
           blacks: batches.map(batch => batch.x * 100 + batch.y),
         });
-        setBlacks(result.data);
+        fetchBlacks();
       } catch (err) {
         console.log(err);
       }
@@ -294,10 +294,10 @@ const PixelMap: React.FC = () => {
       try {
         const SERVER_URL =
           process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8001";
-        const result = await axios.post(`${SERVER_URL}/api/blackout/remove`, {
+        await axios.post(`${SERVER_URL}/api/blackout/remove`, {
           blacks: batches.map(batch => batch.x * 100 + batch.y),
         });
-        setBlacks(result.data);
+        fetchBlacks();
       } catch (err) {
         console.log(err);
       }
