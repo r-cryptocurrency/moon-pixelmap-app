@@ -17,6 +17,7 @@
     "axios": "^1.2.2",
     "color-hash": "^2.0.2",
     "ethers": "^5.7.0",
+    "formidable": "^2.1.1",
     "js-base64": "^3.7.3",
     "next": "^13.0.0",
     "notistack": "^2.0.8",
