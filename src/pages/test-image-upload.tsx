@@ -28,7 +28,7 @@ const ImageUpload : FC = () => {
         });
         const b = await response.json()
         console.log("image upload: response is %o", b)
-        setRespImage(b.img)
+        setRespImage(b.resizedImage)
       };
     return (<>
         <p>asdf</p>
