@@ -19,14 +19,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     form.parse(req, async function(err, fields, files) {
         console.log("fields are %o", fields)
         console.log("files are", files.file)
-        console.log("cwd is ", process.cwd())
         
+        const base = process.env.NODE_ENV === 'production' ? '/tmp' : process.cwd()
         const file = Array.isArray(files.file) ? files.file[0] : files.file
         const fileData = fs.readFileSync(file.filepath)
-        const writePath = path.join(process.cwd(), file.originalFilename!)
+        const writePath = path.join(base, file.originalFilename!)
         fs.writeFileSync(writePath, fileData)
         console.log("wrote a file")
-        const resizedPath = path.join(process.cwd(), `resized-${file.originalFilename}`)
+        const resizedPath = path.join(base, `resized-${file.originalFilename}`)
         await sharp(writePath).resize(128, 128, { fit: 'contain' } ).toFile(resizedPath)
         const resizedImageBinary = fs.readFileSync(resizedPath)
         const resizedImageb64 = resizedImageBinary.toString('base64')
