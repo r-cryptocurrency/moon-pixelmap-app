@@ -4,6 +4,8 @@ import { FC, useState } from "react"
 const ImageUpload : FC = () => {
     const [image, setImage] = useState<string | Blob | null>(null);
     const [createObjectURL, setCreateObjectURL] = useState<ReturnType<typeof URL.createObjectURL> | null>(null);   
+    const [respImage, setRespImage] = useState<string | undefined>(undefined)
+
 
     console.log("image is %o", image)
     console.log("Createobj is %o", createObjectURL)
@@ -24,6 +26,9 @@ const ImageUpload : FC = () => {
           method: "POST",
           body
         });
+        const b = await response.json()
+        console.log("image upload: response is %o", b)
+        setRespImage(b.img)
       };
     return (<>
         <p>asdf</p>
@@ -31,6 +36,7 @@ const ImageUpload : FC = () => {
         <button type='submit' onClick={uploadToServer}>
             submit
         </button>
+        { respImage && <img src={respImage} alt='asdf' />}
     </>)
 }
 export default ImageUpload

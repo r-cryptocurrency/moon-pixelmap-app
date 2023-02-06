@@ -17,6 +17,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const form = new IncomingForm();
     form.parse(req, async function(err, fields, files) {
+      if (err) {
+        return res.status(400).json(err)
+      }
         console.log("fields are %o", fields)
         console.log("files are", files.file)
         
