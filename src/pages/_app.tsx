@@ -28,6 +28,7 @@ import { RedditNameContext } from "../hooks/useRedditNameContext";
 import useWindowSize from "../hooks/useWindowSize";
 import { PinchContext } from "../hooks/usePinchContext";
 import { BlackListContext } from "../hooks/useBlackListContext";
+import { EthersMulticall } from "@morpho-labs/ethers-multicall";
 
 function App({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = React.useState(false);
