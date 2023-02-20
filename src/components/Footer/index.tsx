@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
           <FaGlobe></FaGlobe>
         </ContactIcon>
         <ContactIcon
-          href="https://mumbai.polygonscan.com/address/0x66FF1BcdCD50bB234B7A2102cF0875dfca60E703#code"
+          href="https://nova.arbiscan.io/token/0x934095513c1ff89592a4b8490e263da7a6a4ceac#code"
           target={"_blank"}
         >
           <FaEthereum></FaEthereum>
